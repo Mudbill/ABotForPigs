@@ -14,5 +14,5 @@ export default async function (client: Client) {
 		}
 	});
 
-	console.info('Initialized Sabatu listener');
+	console.info('Initialized Spelos listener');
 }
