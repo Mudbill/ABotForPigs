@@ -37,7 +37,7 @@ export default async function (client: Client) {
 
 		if (command) {
 			if (!msg.member.hasPermission(command.permission)) {
-				return channel.info(msg, `fuck off, you're not my mom`);
+				return channel.info(msg, `you're not my mom`);
 			}
 
 			try {
