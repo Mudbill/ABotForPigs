@@ -7,7 +7,7 @@ import fs from 'fs';
 
 export default async function (client: Client) {
 	client.on('message', (msg) => {
-		const nate = '105692860271042560';//'203652305772478465';
+		const nate = '203652305772478465';
 		if (msg.member.user.id !== nate) return;
 
 		if (msg.content.match(/:\w*cmon\w*:/)) {
