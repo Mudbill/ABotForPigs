@@ -5,7 +5,7 @@ const command: Command = {
 	command: 'nate',
 	permission: Permissions.FLAGS.ADMINISTRATOR,
 	exec: async (args, msg) => {
-		const nateID = '105692860271042560';
+		const nateID = '203652305772478465';
 		const nate = msg.guild.members.cache.get(nateID);
 		if (!nate) return;
 
