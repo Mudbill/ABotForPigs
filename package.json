@@ -1,7 +1,7 @@
 {
-	"name": "botmill",
+	"name": "abotforpigs",
 	"version": "1.0.0",
-	"description": "Mudbill's Discord bot",
+	"description": "FG Underground shitposting bot",
 	"main": "app/src/main.ts",
 	"module": "app/src/main.ts",
 	"author": "Mudbill",
