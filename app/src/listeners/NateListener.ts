@@ -29,10 +29,13 @@ export default async function (client: Client) {
 			}
 		}
 
-		// if (msg.content.match(/:\w*cmon\w*:/)) {
-		// 	msg.channel.send(`<@${nate}> <:cmon:811019110531596308>`);
-		// 	return;
-		// }
+		if (msg.content.match(/:\w*cmon\w*:/)) {
+			const status = await db.findOne({ _id: 'nate_enable' });
+			if (status && status.value === true) {
+				msg.channel.send(`<@${nate}> <:cmon:811019110531596308>`);
+			}
+			return;
+		}
 
 		// const child = child_process.spawn(`curl www.google.com`);
 		// child.stdout.on('data', a => {
