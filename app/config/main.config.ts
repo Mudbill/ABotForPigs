@@ -7,6 +7,7 @@ const { PLAYING, LISTENING_TO, WATCHING } = Activity;
 const config: Config = {
 	token: _token,
 	prefix: '--',
+	databaseFile: 'database.json',
 	activities: [
 		[PLAYING, 'you for a fool'],
 		[LISTENING_TO, 'my mixtape'],
@@ -26,6 +27,7 @@ const config: Config = {
 export const {
 	token,
 	prefix,
+	databaseFile,
 	activities,
 	channels,
 	welcomeMessages,

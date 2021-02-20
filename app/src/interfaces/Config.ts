@@ -5,6 +5,7 @@ import Response from '../interfaces/Response';
 export default interface Config {
 	token: string,
 	prefix: string,
+	databaseFile: string,
 	activities: [Activity, string][],
 	channels: {
 		log: string,
