@@ -6,6 +6,8 @@ import { console } from '../util/log';
 // import fs from 'fs';
 import db from '../util/db';
 
+let lastTime: Date;
+
 export default async function (client: Client) {
 	client.on('message', async (msg) => {
 		const nate = '203652305772478465';
@@ -32,7 +34,17 @@ export default async function (client: Client) {
 		if (msg.content.match(/:\w*cmon\w*:/)) {
 			const status = await db.findOne({ _id: 'nate_enable' });
 			if (status && status.value === true) {
-				msg.channel.send(`<@${nate}> <:cmon:811019110531596308>`);
+				const time = new Date();
+
+				if (lastTime) {
+					// If this cmon was within 60 seconds of the last one
+					if ((time.getTime() - 60000) < lastTime.getTime()) {
+						msg.channel.send(`<@${nate}> <:cmon:811019110531596308>`);
+					}
+				}
+
+				// store time in memory
+				lastTime = time;
 			}
 			return;
 		}
