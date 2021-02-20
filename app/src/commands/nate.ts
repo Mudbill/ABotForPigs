@@ -94,7 +94,7 @@ const command: Command = {
 			// if LIST command, display registered emojis
 			else if (arg1 === 'list') {
 				const emojis = await db.findOne({ _id: 'nate_emojis' });
-				let list: string[];
+				let list: string[] = [];
 				if (emojis) {
 					list = emojis.value;
 				}
