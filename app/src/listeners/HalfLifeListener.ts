@@ -3,13 +3,20 @@ import { console } from '../util/log';
 
 export default async function (client: Client) {
 	client.on('message', async (msg) => {
-		const txt = msg.content.toLowerCase();
-		if (txt.includes('play')
-			&& ((txt.includes('half') && txt.includes('life'))
-				|| txt.includes('hl'))) {
+		if (includesHalfLife(msg.content)) {
 			msg.channel.send(`<:cmon:811019110531596308>`);
 		}
+		// const txt = msg.content.toLowerCase();
+		// if (txt.includes('play')
+		// 	&& ((txt.includes('half') && txt.includes('life'))
+		// 		|| txt.includes('hl'))) {
+		// 	msg.channel.send(`<:cmon:811019110531596308>`);
+		// }
 	});
 
-	console.info('Initialized Sabatu listener');
+	console.info('Initialized Half Life listener');
+}
+
+function includesHalfLife(str: string) {
+	return /((play|piay).*(hl|(half|haIf).?(life|Iife)))/.test(str)
 }
