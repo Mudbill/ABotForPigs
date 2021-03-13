@@ -20,6 +20,7 @@ export default async function (client: Client) {
 				console.error(`Duplicate command ${cmd.command}`);
 				continue;
 			}
+			cmd.init && cmd.init();
 			map.set(cmd.command, cmd);
 		} catch (err) {
 			console.error('Failed to import command', err);

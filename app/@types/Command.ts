@@ -5,4 +5,6 @@ export default interface Command {
 	permission: PermissionResolvable,
 	description?: string,
 	exec: (args: string[], msg: Message) => any;
+	init?: () => Promise<any>;
+	exit?: () => Promise<any>;
 }
