@@ -11,7 +11,9 @@ const command: Command = {
 	command: 'yt',
 	permission: Permissions.FLAGS.SEND_MESSAGES,
 	init: async () => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({
+			executablePath: '/usr/bin/chromium-browser'
+		});
 		page = await browser.newPage();
 		await page.setViewport({ width: 750, height: 600 });
 		await page.setUserAgent('Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:43.0) Gecko/20100101 Firefox/43.0');
