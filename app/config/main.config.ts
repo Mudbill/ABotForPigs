@@ -1,5 +1,5 @@
-import Activity from '../src/enums/Activity';
-import Config from '../src/interfaces/Config';
+import Activity from '../@types/Activity';
+import Config from '../@types/Config';
 import _token from './token.config';
 
 const { PLAYING, LISTENING_TO, WATCHING } = Activity;

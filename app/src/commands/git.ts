@@ -1,4 +1,4 @@
-import Command from "../interfaces/Command"
+import Command from "../../@types/Command"
 import git from 'simple-git';
 import { Permissions } from "discord.js";
 

@@ -1,5 +1,5 @@
 import { Permissions } from "discord.js";
-import Command from "../interfaces/Command"
+import Command from "../../@types/Command"
 // import { commands } from '../listeners/CommandListener';
 
 const command: Command = {

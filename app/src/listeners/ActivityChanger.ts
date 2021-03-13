@@ -1,5 +1,5 @@
 import { Client } from 'discord.js'
-import Activity from '../enums/Activity';
+import Activity from '../../@types/Activity';
 import { prefix, activities } from '../../config'
 import { console } from '../util/log'
 

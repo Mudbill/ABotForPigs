@@ -1,5 +1,5 @@
 import { Permissions } from "discord.js";
-import Command from "../interfaces/Command"
+import Command from "../../@types/Command"
 import db from '../util/db';
 
 const command: Command = {

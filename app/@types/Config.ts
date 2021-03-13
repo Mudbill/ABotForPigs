@@ -1,6 +1,6 @@
 import { GuildMember } from 'discord.js';
-import Activity from '../enums/Activity';
-import Response from '../interfaces/Response';
+import Activity from './Activity';
+import Response from './Response';
 
 export default interface Config {
 	token: string,
