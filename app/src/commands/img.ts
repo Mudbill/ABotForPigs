@@ -8,8 +8,6 @@ const command: Command = {
 	command: 'img',
 	permission: Permissions.FLAGS.SEND_MESSAGES,
 	exec: async (args, msg) => {
-		console.log('users', users);
-
 		if (!args.length) {
 			msg.channel.send('<:cmon_tired:820326776562778133> Missing search query');
 			return;
@@ -86,7 +84,6 @@ const command: Command = {
 			msg.client.off('message', followup);
 			timeout = null;
 			delete users[msg.author.id];
-			console.log(`Cleared listener for ${msg.author.username}`);
 		}
 
 		if (users[msg.author.id]) {
