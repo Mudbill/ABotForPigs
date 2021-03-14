@@ -52,7 +52,7 @@ const command: Command = {
 
 		async function followup(msg2: Message) {
 			if (msg2.author.id !== msg.author.id) return;
-			if (['n', 'next'].includes(msg2.content)) {
+			if (['n', 'next'].includes(msg2.content.toLowerCase())) {
 				if (timeout) timeout.refresh();
 
 				await msg2.delete();
@@ -68,7 +68,7 @@ const command: Command = {
 					content: result[index].image
 				});
 			}
-			if (['p', 'prev', 'previous', 'b', 'back'].includes(msg2.content)) {
+			if (['p', 'prev', 'previous', 'b', 'back'].includes(msg2.content.toLowerCase())) {
 				if (timeout) timeout.refresh();
 
 				await msg2.delete();
