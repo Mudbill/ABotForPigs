@@ -12,7 +12,8 @@ const command: Command = {
 	permission: Permissions.FLAGS.SEND_MESSAGES,
 	init: async () => {
 		browser = await puppeteer.launch({
-			executablePath: '/usr/bin/chromium-browser'
+			// Hard coded for the time being cus it didnt work on my raspi
+			executablePath: '/usr/bin/chromium'
 		});
 		page = await browser.newPage();
 		await page.setViewport({ width: 750, height: 600 });
