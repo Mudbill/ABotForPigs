@@ -6,7 +6,7 @@ const command: Command = {
 	command: 'help',
 	permission: Permissions.FLAGS.SEND_MESSAGES,
 	exec: async (args, msg) => {
-		msg.channel.send(`try \`--yt <query>\` or \`--img <query>\``);
+		msg.channel.send(`try \`--yt <query>\` or \`--img <query>\` or \`--e <emoji>\``);
 	}
 }
 
