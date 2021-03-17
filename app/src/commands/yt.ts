@@ -1,24 +1,12 @@
-import { Permissions } from "discord.js";
+import { Message, Permissions } from "discord.js";
 import Command from "../../@types/Command"
-import puppeteer from 'puppeteer';
-import cheerio from 'cheerio';
+import youtube from 'scrape-youtube';
 
-// Keep these in memory for speed
-let browser: puppeteer.Browser;
-let page: puppeteer.Page;
+const users = {};
 
 const command: Command = {
 	command: 'yt',
 	permission: Permissions.FLAGS.SEND_MESSAGES,
-	init: async () => {
-		browser = await puppeteer.launch({
-			// Hard coded for the time being cus it didnt work on my raspi
-			executablePath: '/usr/bin/chromium'
-		});
-		page = await browser.newPage();
-		await page.setViewport({ width: 750, height: 600 });
-		await page.setUserAgent('Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:43.0) Gecko/20100101 Firefox/43.0');
-	},
 	exec: async (args, msg) => {
 		if (!args.length) {
 			msg.channel.send('<:cmon_tired:820326776562778133> Missing search query');
@@ -34,48 +22,77 @@ const command: Command = {
 			}
 		});
 
-		// Set up search query and connect to Youtube
-		const params = new URLSearchParams();
-		params.set('search_query', query);
-		await page.goto(`https://www.youtube.com/results?${params}`);
+		const { videos } = await youtube.search(query);
+		if (!videos.length) {
+			reply.edit({
+				content: 'No results, try searching something less retarded next time',
+				embed: null
+			});
+			return;
+		}
 
 		reply.edit({
-			content: `>${query}`,
-			embed: {
-				description: '<a:loading:820326540620857375> Looking for video...'
-			}
+			content: videos[0].link,
+			embed: null
 		});
 
-		// Parse the HTML output
-		await page.waitForSelector('div.ytd-app', { timeout: 10000 });
-		const html = await page.content();
+		// Set up ability to pick next and previous image in resultset
 
-		const $ = cheerio.load(html);
-		const first = $('#contents ytd-video-renderer,#contents ytd-grid-video-renderer').first();
+		let timeout: NodeJS.Timeout;
+		let index = 0;
 
-		const videoAnchor = first.find('#video-title');
+		async function followup(msg2: Message) {
+			if (msg2.author.id !== msg.author.id) return;
+			if (['n', 'next'].includes(msg2.content.toLowerCase())) {
+				if (timeout) timeout.refresh();
 
-		const data = {
-			// title: videoAnchor.text().trim(),
-			link: videoAnchor.attr('href')
+				await msg2.delete();
+
+				++index;
+				if (videos.length <= index) {
+					console.log('exceeded array. i=', index, ' l=', videos.length);
+					index = videos.length - 1;
+					return;
+				};
+
+				return await reply.edit({
+					content: videos[index].link
+				});
+			}
+			if (['p', 'prev', 'previous', 'b', 'back'].includes(msg2.content.toLowerCase())) {
+				if (timeout) timeout.refresh();
+
+				await msg2.delete();
+
+				--index;
+				if (index < 0) return index = 0;
+
+				return reply.edit({
+					content: videos[index].link
+				});
+			}
 		}
 
-		if (data.link) {
-			reply.edit({
-				content: `https://www.youtube.com${data.link}`,
-				embed: null
-			});
-		} else {
-			reply.edit({
-				content: `No videos found for "${query}"`,
-				embed: null
-			});
+		function timeIsOut() {
+			msg.client.off('message', followup);
+			timeout = null;
+			delete users[msg.author.id];
 		}
-	},
-	exit: async () => {
-		if (browser) {
-			await browser.close();
+
+		if (users[msg.author.id]) {
+			users[msg.author.id].destroy();
 		}
+
+		msg.client.on('message', followup);
+		timeout = setTimeout(timeIsOut, 15000);
+
+		users[msg.author.id] = {
+			timeout,
+			destroy: () => {
+				timeIsOut();
+				clearTimeout(timeout);
+			}
+		};
 	}
 }
 
