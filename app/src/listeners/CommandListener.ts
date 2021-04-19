@@ -13,7 +13,7 @@ export default async function (client: Client) {
 	// Just in case this function were to be called twice, we don't want it to duplicate the contents
 	map.clear();
 
-	const post = client.api.applications(client.user.id).guilds('685923643804352536').commands.post;
+	// const post = client.api.applications(client.user.id).guilds('685923643804352536').commands.post;
 
 	for (const file of files) {
 		try {
@@ -25,49 +25,49 @@ export default async function (client: Client) {
 			cmd.init && cmd.init();
 			map.set(cmd.command, cmd);
 
-			post({
-				data: {
-					name: cmd.command,
-					description: cmd.description || 'Missing description'
-				}
-			});
+			// post({
+			// 	data: {
+			// 		name: cmd.command,
+			// 		description: cmd.description || 'Missing description'
+			// 	}
+			// });
 		} catch (err) {
 			console.error('Failed to import command', err);
 		}
 	}
 
-	client.ws.on('INTERACTION_CREATE', async interaction => {
-		console.log(interaction);
-		client.api.interactions(interaction.id, interaction.token).callback.post({
-			data: {
-				type: 4,
-				data: {
-					content: 'Pong'
-				}
+	// client.ws.on('INTERACTION_CREATE', async interaction => {
+	// 	console.log(interaction);
+	// 	client.api.interactions(interaction.id, interaction.token).callback.post({
+	// 		data: {
+	// 			type: 4,
+	// 			data: {
+	// 				content: 'Pong'
+	// 			}
+	// 		}
+	// 	})
+	// });
+
+	client.on('message', async msg => {
+		if (msg.channel.type === 'dm') return;
+		if (msg.author.bot) return;
+		if (!msg.content.startsWith(prefix)) return;
+
+		const args = msg.content.substr(prefix.length).split(' ');
+		const cmdstr = args.shift();
+		const command = map.get(cmdstr);
+
+		if (command) {
+			if (!msg.member.hasPermission(command.permission)) {
+				return channel.info(msg, `you're not my mom`);
 			}
-		})
-	});
 
-	// client.on('message', async msg => {
-	// 	if (msg.channel.type === 'dm') return;
-	// 	if (msg.author.bot) return;
-	// 	if (!msg.content.startsWith(prefix)) return;
-
-	// 	const args = msg.content.substr(prefix.length).split(' ');
-	// 	const cmdstr = args.shift();
-	// 	const command = map.get(cmdstr);
-
-	// 	if (command) {
-	// 		if (!msg.member.hasPermission(command.permission)) {
-	// 			return channel.info(msg, `you're not my mom`);
-	// 		}
-
-	// 		try {
-	// 			command.exec(args, msg)
-	// 		} catch (err) {
-	// 			return console.error('Failed executing command')
-	// 		}
-	// 	}
-	// })
+			try {
+				command.exec(args, msg)
+			} catch (err) {
+				return console.error('Failed executing command')
+			}
+		}
+	})
 	console.info('Initialized command listener')
 }
