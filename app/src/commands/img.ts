@@ -22,9 +22,11 @@ const command: Command = {
 			}
 		});
 
+		const chnl = msg.channel as any;
+
 		const params = {
 			query,
-			moderate: true,
+			moderate: !Boolean(chnl?.nsfw),
 			iterations: 1,
 			retries: 1
 		}

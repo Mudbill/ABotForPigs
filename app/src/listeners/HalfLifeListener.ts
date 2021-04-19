@@ -18,5 +18,5 @@ export default async function (client: Client) {
 }
 
 function includesHalfLife(str: string) {
-	return /((play|piay).*(hl|(half|haIf).?(life|Iife)))/.test(str)
+	return /((play|piay).*(hl|(half|haif).?(life|iife)))/i.test(str)
 }
