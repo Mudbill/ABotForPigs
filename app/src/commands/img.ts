@@ -1,108 +1,116 @@
-import { Message, Permissions } from "discord.js";
-import Command from "../../@types/Command"
-import { image_search } from 'duckduckgo-images-api';
+import { Message, Permissions, TextChannel } from "discord.js";
+import Command from "../../@types/Command";
+import { image_search } from "duckduckgo-images-api";
 
 const users = {};
 
 const command: Command = {
-	command: 'img',
-	permission: Permissions.FLAGS.SEND_MESSAGES,
-	exec: async (args, msg) => {
-		if (!args.length) {
-			msg.channel.send('<:cmon_tired:820326776562778133> Missing search query');
-			return;
-		}
+  command: "img",
+  permission: Permissions.FLAGS.SEND_MESSAGES,
+  exec: async (args, msg) => {
+    if (!args.length) {
+      msg.channel.send("<:cmon_tired:820326776562778133> Missing search query");
+      return;
+    }
 
-		const query = args.join(' ');
+    const query = args.join(" ");
 
-		const reply = await msg.channel.send({
-			content: `>${query}`,
-			embed: {
-				description: '<a:loading:820326540620857375> Fetching results...'
-			}
-		});
+    const reply = await msg.channel.send({
+      content: `>${query}`,
+      embed: {
+        description: "<a:loading:820326540620857375> Fetching results...",
+      },
+    });
 
-		// const chnl = msg.channel as any;
+    // const chnl = msg.channel as any;
 
-		const params = {
-			query,
-			moderate: true,
-			iterations: 1,
-			retries: 1
-		}
+    const params = {
+      query,
+      moderate: true,
+      iterations: 1,
+      retries: 1,
+    };
 
-		const result = await image_search(params);
-		if (!result.length) {
-			reply.edit({
-				content: 'No results, try searching something less retarded next time',
-				embed: null
-			});
-			return;
-		}
+    if (msg.channel instanceof TextChannel) {
+      if (msg.channel.nsfw) params.moderate = false;
+    }
 
-		reply.edit({
-			content: result[0].image,
-			embed: null
-		});
+    const result = await image_search(params);
+    if (!result.length) {
+      reply.edit({
+        content: "No results, try searching something less retarded next time",
+        embed: null,
+      });
+      return;
+    }
 
-		// Set up ability to pick next and previous image in resultset
+    reply.edit({
+      content: result[0].image,
+      embed: null,
+    });
 
-		let timeout: NodeJS.Timeout;
-		let index = 0;
+    // Set up ability to pick next and previous image in resultset
 
-		async function followup(msg2: Message) {
-			if (msg2.author.id !== msg.author.id) return;
-			if (['n', 'next'].includes(msg2.content.toLowerCase())) {
-				if (timeout) timeout.refresh();
+    let timeout: NodeJS.Timeout;
+    let index = 0;
 
-				await msg2.delete();
+    async function followup(msg2: Message) {
+      if (msg2.author.id !== msg.author.id) return;
+      if (["n", "next"].includes(msg2.content.toLowerCase())) {
+        if (timeout) timeout.refresh();
 
-				++index;
-				if (result.length <= index) {
-					console.log('exceeded array. i=', index, ' l=', result.length);
-					index = result.length - 1;
-					return;
-				};
+        await msg2.delete();
 
-				return await reply.edit({
-					content: result[index].image
-				});
-			}
-			if (['p', 'prev', 'previous', 'b', 'back'].includes(msg2.content.toLowerCase())) {
-				if (timeout) timeout.refresh();
+        ++index;
+        if (result.length <= index) {
+          console.log("exceeded array. i=", index, " l=", result.length);
+          index = result.length - 1;
+          return;
+        }
 
-				await msg2.delete();
+        return await reply.edit({
+          content: result[index].image,
+        });
+      }
+      if (
+        ["p", "prev", "previous", "b", "back"].includes(
+          msg2.content.toLowerCase()
+        )
+      ) {
+        if (timeout) timeout.refresh();
 
-				--index;
-				if (index < 0) return index = 0;
+        await msg2.delete();
 
-				return reply.edit({
-					content: result[index].image
-				});
-			}
-		}
+        --index;
+        if (index < 0) return (index = 0);
 
-		function timeIsOut() {
-			msg.client.off('message', followup);
-			timeout = null;
-			delete users[msg.author.id];
-		}
+        return reply.edit({
+          content: result[index].image,
+        });
+      }
+    }
 
-		if (users[msg.author.id]) {
-			users[msg.author.id].destroy();
-		}
+    function timeIsOut() {
+      msg.client.off("message", followup);
+      timeout = null;
+      delete users[msg.author.id];
+    }
 
-		msg.client.on('message', followup);
-		timeout = setTimeout(timeIsOut, 15000);
+    if (users[msg.author.id]) {
+      users[msg.author.id].destroy();
+    }
 
-		users[msg.author.id] = {
-			timeout,
-			destroy: () => {
-				timeIsOut();
-				clearTimeout(timeout);
-			}
-		};
-	}
-}
+    msg.client.on("message", followup);
+    timeout = setTimeout(timeIsOut, 15000);
+
+    users[msg.author.id] = {
+      timeout,
+      destroy: () => {
+        timeIsOut();
+        clearTimeout(timeout);
+      },
+    };
+  },
+};
 
 export default command;
