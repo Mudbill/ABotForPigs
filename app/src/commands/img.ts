@@ -89,6 +89,7 @@ const command: Command = {
         });
       }
       if (["q", "quit"].includes(msg2.content.toLowerCase())) {
+        msg2.delete();
         reply.delete();
         timeIsOut();
         clearTimeout(timeout);
