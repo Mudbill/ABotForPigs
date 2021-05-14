@@ -88,6 +88,11 @@ const command: Command = {
           content: result[index].image,
         });
       }
+      if (["q", "quit"].includes(msg2.content.toLowerCase())) {
+        reply.delete();
+        timeIsOut();
+        clearTimeout(timeout);
+      }
     }
 
     function timeIsOut() {
