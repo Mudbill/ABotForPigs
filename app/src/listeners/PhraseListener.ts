@@ -10,7 +10,7 @@ export default async function (client: Client) {
     if (msg.author.bot) return;
 
     for (const phrase of phrases) {
-      if (!msg.content.includes(phrase.trigger)) {
+      if (!msg.content.toLowerCase().includes(phrase.trigger.toLowerCase())) {
         continue;
       }
 
