@@ -25,7 +25,7 @@ const command: Command = {
     }
     if (args[0] === "add") {
       const result = await add(args, msg);
-      if (result?._id) {
+      if (result._id) {
         msg.channel.send("Added phrase. See all with `--phrase list`");
         loadPhrases();
       }
