@@ -18,6 +18,7 @@
 		"discord.js": "^12.5.3",
 		"duckduckgo-images-api": "^1.0.5",
 		"glob": "^7.1.6",
+		"mathjs": "^10.1.1",
 		"nedb-async-await": "^0.1.2",
 		"path": "^0.12.7",
 		"scrape-youtube": "^2.1.3",

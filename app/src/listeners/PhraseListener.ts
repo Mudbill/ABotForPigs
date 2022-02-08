@@ -1,19 +1,41 @@
 import { Client } from "discord.js";
-import { console } from '../util/log';
-import { responses } from '../../config'
-import { randomIndex } from "../util";
+import Phrase from "../../@types/Phrase";
+import { getPhrases } from "../util/db";
+import { console } from "../util/log";
+
+let phrases: Phrase[] = [];
 
 export default async function (client: Client) {
-	client.on('message', (msg) => {
-		const { content } = msg;
-		const response = responses.find(r => r.on.find(on => content.split(/\s/).includes(on)));
+  client.on("message", (msg) => {
+    if (msg.author.bot) return;
 
-		if (response) {
-			const index = randomIndex(response.say.length);
-			const say = response.say[index];
-			msg.channel.send(say);
-		}
-	});
+    for (const phrase of phrases) {
+      if (!msg.content.includes(phrase.trigger)) {
+        continue;
+      }
 
-	console.info('Initialized phrase listener');
+      const rand = Math.random();
+      if (rand > phrase.chance) {
+        continue;
+      }
+
+      msg.channel.send(phrase.reply);
+    }
+  });
+
+  await loadPhrases();
+
+  console.info("Initialized phrase listener");
+}
+
+export async function loadPhrases() {
+  const current = await getPhrases();
+  phrases = [];
+  for (const phrase of current) {
+    phrases.push({
+      chance: phrase.chance,
+      trigger: phrase.trigger,
+      reply: phrase.reply,
+    });
+  }
 }
