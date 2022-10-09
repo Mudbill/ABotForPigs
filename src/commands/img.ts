@@ -1,28 +1,34 @@
-import { Message, Permissions, TextChannel } from "discord.js";
-import Command from "../../@types/Command";
+import { Message, PermissionsBitField, TextChannel } from "discord.js";
 import { image_search } from "duckduckgo-images-api";
 
-const users = {};
+/** Cache of users currently using image search */
+const users: Record<
+  string,
+  {
+    timeout: NodeJS.Timeout;
+    destroy: () => void;
+  }
+> = {};
 
-const command: Command = {
-  command: "img",
-  permission: Permissions.FLAGS.SEND_MESSAGES,
-  exec: async (args, msg) => {
-    if (!args.length) {
+const ImgCommand: Command = {
+  alias: "img",
+  permission: PermissionsBitField.Flags.SendMessages,
+  exec: async (msg, args) => {
+    if (!args._[0]) {
       msg.channel.send("<:cmon_tired:820326776562778133> Missing search query");
       return;
     }
 
-    const query = args.join(" ");
+    const query = args._.join(" ");
 
     const reply = await msg.channel.send({
       content: `>${query}`,
-      embed: {
-        description: "<a:loading:820326540620857375> Fetching results...",
-      },
+      embeds: [
+        {
+          description: "<a:loading:820326540620857375> Fetching results...",
+        },
+      ],
     });
-
-    // const chnl = msg.channel as any;
 
     const params = {
       query,
@@ -39,19 +45,19 @@ const command: Command = {
     if (!result.length) {
       reply.edit({
         content: "No results, try searching something less retarded next time",
-        embed: null,
+        embeds: [],
       });
       return;
     }
 
     reply.edit({
       content: result[0].image,
-      embed: null,
+      embeds: [],
     });
 
     // Set up ability to pick next and previous image in resultset
 
-    let timeout: NodeJS.Timeout;
+    let timeout: NodeJS.Timeout | undefined;
     let index = 0;
 
     async function followup(msg2: Message) {
@@ -96,9 +102,13 @@ const command: Command = {
       }
     }
 
+    async function cb(m: Message) {
+      followup(m);
+    }
+
     function timeIsOut() {
-      msg.client.off("message", followup);
-      timeout = null;
+      msg.client.off("messageCreate", cb);
+      timeout = undefined;
       delete users[msg.author.id];
     }
 
@@ -106,7 +116,7 @@ const command: Command = {
       users[msg.author.id].destroy();
     }
 
-    msg.client.on("message", followup);
+    msg.client.on("messageCreate", cb);
     timeout = setTimeout(timeIsOut, 15000);
 
     users[msg.author.id] = {
@@ -119,4 +129,4 @@ const command: Command = {
   },
 };
 
-export default command;
+export default ImgCommand;

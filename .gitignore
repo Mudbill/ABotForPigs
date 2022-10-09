@@ -1,8 +1,4 @@
-.vscode/
-node_modules/
-
-yarn-error.log
-yarn.lock
-
-app/config/token*
-database.json
+node_modules
+bin
+src/config/token.config.json
+store.db
