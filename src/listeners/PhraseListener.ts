@@ -9,7 +9,10 @@ const PhraseListener: Listener = async (client) => {
 
     for (const phrase of phrases) {
       if (msg.guildId !== phrase.serverId) continue;
-      if (!msg.content.toLowerCase().includes(phrase.trigger.toLowerCase())) {
+
+      const regex = new RegExp(phrase.trigger);
+
+      if (!regex.test(msg.content.toLowerCase())) {
         continue;
       }
 
