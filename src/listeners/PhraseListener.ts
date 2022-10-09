@@ -5,35 +5,42 @@ let phrases: Phrase[] = [];
 
 const PhraseListener: Listener = async (client) => {
   client.on("messageCreate", async (msg) => {
-    if (msg.author.bot) return;
+    try {
+      if (msg.author.bot) return;
 
-    for (const phrase of phrases) {
-      if (msg.guildId !== phrase.serverId) continue;
+      for (const phrase of phrases) {
+        if (msg.guildId !== phrase.serverId) continue;
 
-      const regex = new RegExp(phrase.trigger);
+        const regex = new RegExp(phrase.trigger);
 
-      if (!regex.test(msg.content.toLowerCase())) {
-        continue;
-      }
-
-      if (phrase.channels?.length) {
-        if (
-          phrase.channels.includes(`<#${msg.channelId}>`) ===
-          Boolean(phrase.blacklist)
-        )
+        if (!regex.test(msg.content.toLowerCase())) {
           continue;
-      }
+        }
 
-      const rand = Math.random();
-      if (rand > phrase.chance) {
-        continue;
-      }
+        if (phrase.channels?.length) {
+          if (
+            phrase.channels.includes(`<#${msg.channelId}>`) ===
+            Boolean(phrase.blacklist)
+          )
+            continue;
+        }
 
-      const msg2 = await msg.channel.send(phrase.reply);
+        const rand = Math.random();
+        if (rand > phrase.chance) {
+          continue;
+        }
 
-      if (phrase.flash) {
-        await msg2.delete();
+        const msg2 = await msg.channel.send(phrase.reply);
+
+        if (phrase.flash) {
+          await msg2.delete();
+        }
       }
+    } catch (error) {
+      console.error("Command failed", error);
+      msg.channel.send(
+        "Internal error occurred, can someone fucking fix this shit??"
+      );
     }
   });
 

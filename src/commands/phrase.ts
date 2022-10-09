@@ -102,6 +102,13 @@ async function add(msg: Message, args: Arguments) {
       "Missing trigger word <:thats_fucking_it:940010467571683338> set with -t or --trigger"
     );
   }
+
+  try {
+    const regex = new RegExp(trigger);
+  } catch (e) {
+    return msg.channel.send("That regex will fuck me up bro");
+  }
+
   if (!chance) {
     return msg.channel.send(
       "No chance means never dumbass, set with -c or --chance"
