@@ -72,7 +72,7 @@ async function list(msg: Message) {
   let messageCount = 1;
 
   for (const phrase of result) {
-    let str = `\`${phrase._id}\` -t "${phrase.trigger}" -c ${phrase.chance} -r "${phrase.reply}"`;
+    let str = `${phrase._id}\n -t "${phrase.trigger}" -c ${phrase.chance} -r "${phrase.reply}"`;
     if (phrase.channels?.length) {
       for (const channel of phrase.channels) {
         str += ` -C ${channel}`;
@@ -86,11 +86,11 @@ async function list(msg: Message) {
       separateMessages.push("");
     }
 
-    separateMessages[messageCount - 1] += "\n" + str;
+    separateMessages[messageCount - 1] += "\n\n" + str;
   }
 
   for (const message of separateMessages) {
-    msg.channel.send(message);
+    msg.channel.send("```" + message + "```");
   }
 }
 
