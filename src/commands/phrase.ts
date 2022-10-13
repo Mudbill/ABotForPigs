@@ -67,7 +67,10 @@ async function list(msg: Message) {
     msg.channel.send("_No phrases added_");
     return;
   }
-  const reply: string[] = [];
+
+  const separateMessages = [""];
+  let messageCount = 1;
+
   for (const phrase of result) {
     let str = `\`${phrase._id}\` -t "${phrase.trigger}" -c ${phrase.chance} -r "${phrase.reply}"`;
     if (phrase.channels?.length) {
@@ -77,14 +80,18 @@ async function list(msg: Message) {
     }
     if (phrase.blacklist) str += " -B";
     if (phrase.flash) str += " -F";
-    reply.push(str);
+
+    if (separateMessages[messageCount - 1].length + str.length >= 1980) {
+      messageCount++;
+      separateMessages.push("");
+    }
+
+    separateMessages[messageCount - 1] += "\n" + str;
   }
-  const joinedMessage = reply.join("\n");
-  if (joinedMessage.length > 2000) {
-    msg.channel.send("List is over 2k chars!");
+
+  for (const message of separateMessages) {
+    msg.channel.send(message);
   }
-  msg.channel.send(joinedMessage.slice(0, 2000));
-  return;
 }
 
 async function add(msg: Message, args: Arguments) {
