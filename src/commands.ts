@@ -3,8 +3,10 @@ import GitCommand from "./commands/git";
 import HelpCommand from "./commands/help";
 import ImgCommand from "./commands/img";
 import PhraseCommand from "./commands/phrase";
+// import PinCommand from "./commands/pin";
 import PingCommand from "./commands/ping";
 import RestartCommand from "./commands/restart";
+import SayCommand from "./commands/say";
 import YtCommand from "./commands/yt";
 
 export default [
@@ -16,4 +18,6 @@ export default [
   YtCommand,
   RestartCommand,
   PingCommand,
+  SayCommand,
+  // PinCommand,
 ];

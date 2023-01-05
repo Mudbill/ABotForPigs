@@ -32,3 +32,7 @@ for (const listener of listeners) {
 }
 
 console.info(`Loaded ${listeners.length} listeners`);
+
+process.on("unhandledRejection", (e) => {
+  console.error(e);
+});
