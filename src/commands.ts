@@ -3,7 +3,7 @@ import GitCommand from "./commands/git";
 import HelpCommand from "./commands/help";
 import ImgCommand from "./commands/img";
 import PhraseCommand from "./commands/phrase";
-// import PinCommand from "./commands/pin";
+import PinLimitCommand from "./commands/pinlimit";
 import PingCommand from "./commands/ping";
 import RestartCommand from "./commands/restart";
 import SayCommand from "./commands/say";
@@ -19,5 +19,5 @@ export default [
   RestartCommand,
   PingCommand,
   SayCommand,
-  // PinCommand,
+  PinLimitCommand,
 ];
