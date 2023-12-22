@@ -6,8 +6,7 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "@mudbill/duckduckgo-images-api": "^1.1.0",
-    "@types/duckduckgo-images-api": "^1.0.1",
+    "@mudbill/duckduckgo-images-api": "^1.2.2",
     "@types/yargs-parser": "^21.0.0",
     "chalk": "^4",
     "discord.js": "^14.5.0",
@@ -15,10 +14,12 @@
     "nedb-promises": "^6.2.1",
     "scrape-youtube": "^2.3.2",
     "simple-git": "^3.16.0",
+    "ts-node": "^10.9.2",
     "typescript": "^4.8.4",
     "yargs-parser": "^21.1.1"
   },
   "scripts": {
-    "start": "tsc && node ."
+    "start": "tsc && node .",
+    "dev": "ts-node ."
   }
 }

@@ -1,5 +1,5 @@
 import { Message, PermissionsBitField, TextChannel } from "discord.js";
-import { image_search } from "duckduckgo-images-api";
+import { image_search } from "@mudbill/duckduckgo-images-api";
 
 /** Cache of users currently using image search */
 const users: Record<
