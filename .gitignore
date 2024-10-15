@@ -1,5 +1,5 @@
 node_modules
 bin
-src/config/token.config.json
 store.db
 .DS_Store
+.env

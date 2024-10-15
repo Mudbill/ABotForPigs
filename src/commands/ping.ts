@@ -4,6 +4,9 @@ const PingCommand: Command = {
   alias: "ping",
   permission: PermissionsBitField.Flags.SendMessages,
   exec: async (msg, args) => {
+    if (!msg.channel.isSendable()) {
+      return;
+    }
     const msg2 = await msg.channel.send("🙂");
     const delay = msg2.createdTimestamp - msg.createdTimestamp;
 

@@ -1,5 +1,5 @@
 import { getPhrases } from "../database";
-import { console } from "../util/log";
+import { logger } from "../util/log";
 
 let phrases: Phrase[] = [];
 
@@ -37,7 +37,7 @@ const PhraseListener: Listener = async (client) => {
         }
       }
     } catch (error) {
-      console.error("Command failed", error);
+      logger.error("Command failed", error);
       msg.channel.send(
         "Internal error occurred, can someone fucking fix this shit??"
       );
@@ -46,12 +46,12 @@ const PhraseListener: Listener = async (client) => {
 
   await loadPhrases();
 
-  console.info("PhraseListener initialized");
+  logger.info("PhraseListener initialized");
 };
 
 export async function loadPhrases() {
   phrases = await getPhrases();
-  console.info(`Loaded ${phrases.length} phrases`);
+  logger.info(`Loaded ${phrases.length} phrases`);
 }
 
 export default PhraseListener;

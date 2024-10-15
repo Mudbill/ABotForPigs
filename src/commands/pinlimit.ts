@@ -4,6 +4,9 @@ const PinLimitCommand: Command = {
   alias: "pinlimit",
   permission: PermissionsBitField.Flags.SendMessages,
   exec: async (msg, args) => {
+    if (!msg.channel.isSendable()) {
+      return;
+    }
     await msg.channel.send("Ok let's see...");
 
     const pins = await msg.channel.messages.fetchPinned();

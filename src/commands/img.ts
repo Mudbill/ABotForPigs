@@ -14,6 +14,10 @@ const ImgCommand: Command = {
   alias: "img",
   permission: PermissionsBitField.Flags.SendMessages,
   exec: async (msg, args) => {
+    if (!msg.channel.isSendable()) {
+      return;
+    }
+
     if (!args._[0]) {
       msg.channel.send("<:cmon_tired:820326776562778133> Missing search query");
       return;
@@ -69,7 +73,7 @@ const ImgCommand: Command = {
 
         ++index;
         if (result.length <= index) {
-          console.log("exceeded array. i=", index, " l=", result.length);
+          console.warn("exceeded array. i=", index, " l=", result.length);
           index = result.length - 1;
           return;
         }

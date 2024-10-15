@@ -14,6 +14,9 @@ const YtCommand: Command = {
   alias: "yt",
   permission: PermissionsBitField.Flags.SendMessages,
   exec: async (msg, args) => {
+    if (!msg.channel.isSendable()) {
+      return;
+    }
     if (!args._.length) {
       msg.channel.send("<:cmon_tired:820326776562778133> Missing search query");
       return;
@@ -59,7 +62,7 @@ const YtCommand: Command = {
 
         ++index;
         if (videos.length <= index) {
-          console.log("exceeded array. i=", index, " l=", videos.length);
+          console.warn("exceeded array. i=", index, " l=", videos.length);
           index = videos.length - 1;
           return;
         }

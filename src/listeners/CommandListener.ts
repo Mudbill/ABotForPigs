@@ -1,7 +1,7 @@
 import commands from "../commands";
 import botConfig from "../config/bot.config";
 import yargsParser from "yargs-parser";
-import { console } from "../util/log";
+import { logger } from "../util/log";
 
 /** Stores a cache of commands in memory */
 const commandMap: Map<string, Command> = new Map();
@@ -9,13 +9,13 @@ const commandMap: Map<string, Command> = new Map();
 export const CommandListener: Listener = async (client) => {
   for (const command of commands) {
     if (commandMap.has(command.alias)) {
-      console.error(`Duplicate command ${command.alias}`);
+      logger.error(`Duplicate command ${command.alias}`);
       continue;
     }
 
     commandMap.set(command.alias, command);
   }
-  console.info(`Loaded ${commandMap.size} commands`);
+  logger.info(`Loaded ${commandMap.size} commands`);
 
   client.on("messageCreate", async (msg) => {
     if (msg.author.bot) return;
@@ -47,14 +47,14 @@ export const CommandListener: Listener = async (client) => {
     try {
       await command.exec(msg, args);
     } catch (error) {
-      console.error("Command failed", error);
+      logger.error("Command failed", error);
       msg.channel.send(
         "Internal error occurred, can someone fucking fix this shit??"
       );
     }
   });
 
-  console.info("CommandListener initialized");
+  logger.info("CommandListener initialized");
 };
 
 export default CommandListener;

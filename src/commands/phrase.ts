@@ -23,6 +23,9 @@ const PhraseCommand: Command = {
     boolean: ["whitelist"],
   },
   exec: async (msg, args) => {
+    if (!msg.channel.isSendable()) {
+      return;
+    }
     if (!args._[0]) {
       return msg.channel.send(
         'to add: `$phrase add --trigger Sabatu --chance 1/1000 --reply "I am bitch :)"`\n' +
@@ -48,6 +51,9 @@ const PhraseCommand: Command = {
 };
 
 async function remove(msg: Message, args: Arguments) {
+  if (!msg.channel.isSendable()) {
+    return;
+  }
   const id = args._[1];
   if (!id) {
     return msg.channel.send("Gimme da ID");
@@ -62,6 +68,9 @@ async function remove(msg: Message, args: Arguments) {
 }
 
 async function list(msg: Message) {
+  if (!msg.channel.isSendable()) {
+    return;
+  }
   const result = (await getPhrases()).filter((p) => p.serverId === msg.guildId);
   if (!result.length) {
     msg.channel.send("_No phrases added_");
@@ -95,6 +104,9 @@ async function list(msg: Message) {
 }
 
 async function add(msg: Message, args: Arguments) {
+  if (!msg.channel.isSendable()) {
+    return;
+  }
   const {
     trigger = "",
     chance = "",

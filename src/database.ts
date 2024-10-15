@@ -1,8 +1,8 @@
 import Datastore from "nedb-promises";
 import botConfig from "./config/bot.config";
-import { console } from "./util/log";
+import { logger } from "./util/log";
 
-console.info("Creating database instance");
+logger.info("Creating database instance");
 
 export const db = Datastore.create(botConfig.database);
 db.load();

@@ -4,9 +4,10 @@ const AboutCommand: Command = {
   alias: "about",
   permission: PermissionsBitField.Flags.SendMessages,
   exec: async (msg, args) => {
-    msg.channel.send(
-      `a strand-type bot made by an incompetent programmer so do you understand`
-    );
+    msg.channel.isSendable() &&
+      msg.channel.send(
+        `a strand-type bot made by an incompetent programmer so do you understand`
+      );
   },
 };
 

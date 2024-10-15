@@ -1,7 +1,6 @@
 import { Client, GatewayIntentBits } from "discord.js";
-import botConfig from "./config/bot.config";
 import listeners from "./listeners";
-import { console } from "./util/log";
+import { logger } from "./util/log";
 
 const client = new Client({
   intents: [
@@ -14,7 +13,7 @@ const client = new Client({
 });
 
 client.on("ready", () => {
-  console.info(`Logged in as ${client.user?.tag}`);
+  logger.info(`Logged in as ${client.user?.tag}`);
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -25,14 +24,14 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-client.login(botConfig.token);
+client.login(process.env.BOT_TOKEN);
 
 for (const listener of listeners) {
   listener(client);
 }
 
-console.info(`Loaded ${listeners.length} listeners`);
+logger.info(`Loaded ${listeners.length} listeners`);
 
 process.on("unhandledRejection", (e) => {
-  console.error(e);
+  logger.error(e);
 });

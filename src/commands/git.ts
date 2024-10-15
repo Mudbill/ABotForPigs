@@ -13,23 +13,23 @@ const GitCommand: Command = {
         "master",
       ]);
       let output = result.slice(0, 500);
-
-      msg.channel.send({
-        embeds: [
-          {
-            title: "git pull",
-            description: "```" + output + "```",
-            timestamp: new Date().toISOString(),
-            author: {
-              name:
-                msg.member?.nickname ||
-                msg.member?.user.username ||
-                msg.author.username,
-              icon_url: msg.member?.user.avatarURL() || undefined,
+      msg.channel.isSendable() &&
+        msg.channel.send({
+          embeds: [
+            {
+              title: "git pull",
+              description: "```" + output + "```",
+              timestamp: new Date().toISOString(),
+              author: {
+                name:
+                  msg.member?.nickname ||
+                  msg.member?.user.username ||
+                  msg.author.username,
+                icon_url: msg.member?.user.avatarURL() || undefined,
+              },
             },
-          },
-        ],
-      });
+          ],
+        });
     }
   },
 };
