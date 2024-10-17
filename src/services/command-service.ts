@@ -1,24 +1,17 @@
-import commands from "../commands";
 import botConfig from "../config/bot.config";
 import yargsParser from "yargs-parser";
-import { logger } from "../util/log";
+import { logger } from "../utils/log";
+import { Service } from "../types";
+import { commands } from "../features";
 
-/** Stores a cache of commands in memory */
-const commandMap: Map<string, Command> = new Map();
-
-export const CommandListener: Listener = async (client) => {
-  for (const command of commands) {
-    if (commandMap.has(command.alias)) {
-      logger.error(`Duplicate command ${command.alias}`);
-      continue;
-    }
-
-    commandMap.set(command.alias, command);
-  }
-  logger.info(`Loaded ${commandMap.size} commands`);
+export const CommandService: Service = async (client) => {
+  logger.info(`Loaded ${commands.size} commands`);
 
   client.on("messageCreate", async (msg) => {
+    // Ignore messages from other bots (so we don't get infinite bot loops)
     if (msg.author.bot) return;
+
+    // Ignore DMs
     if (msg.channel.isDMBased()) return;
 
     let content = msg.content.trim();
@@ -35,7 +28,7 @@ export const CommandListener: Listener = async (client) => {
 
     const alias = content.split(" ")[0];
 
-    const command = commandMap.get(alias);
+    const command = commands.get(alias);
     if (!command) return;
     if (!msg.member?.permissions.has(command.permission)) {
       msg.reply("you're not my mom");
@@ -57,4 +50,4 @@ export const CommandListener: Listener = async (client) => {
   logger.info("CommandListener initialized");
 };
 
-export default CommandListener;
+export default CommandService;

@@ -1,4 +1,5 @@
 import { PermissionsBitField } from "discord.js";
+import { Command } from "../types";
 
 const RestartCommand: Command = {
   alias: "restart",

@@ -1,9 +1,18 @@
 import Datastore from "nedb-promises";
-import botConfig from "./config/bot.config";
-import { logger } from "./util/log";
+import botConfig from "../config/bot.config";
+import { logger } from "../utils/log";
+
+export type Phrase = {
+  serverId: string;
+  trigger: string;
+  chance: number;
+  reply: string;
+  channels?: Array<string>;
+  blacklist?: boolean;
+  flash?: boolean;
+};
 
 logger.info("Creating database instance");
-
 export const db = Datastore.create(botConfig.database);
 db.load();
 

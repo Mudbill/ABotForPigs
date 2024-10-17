@@ -2,6 +2,6 @@
 
 while true
 do
-yarn start
+bun start
 sleep 3
 done

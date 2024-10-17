@@ -1,9 +1,10 @@
-import { getPhrases } from "../database";
-import { logger } from "../util/log";
+import { getPhrases, Phrase } from "../db/database";
+import { Service } from "../types";
+import { logger } from "../utils/log";
 
 let phrases: Phrase[] = [];
 
-const PhraseListener: Listener = async (client) => {
+const PhraseService: Service = async (client) => {
   client.on("messageCreate", async (msg) => {
     try {
       if (msg.author.bot) return;
@@ -54,4 +55,4 @@ export async function loadPhrases() {
   logger.info(`Loaded ${phrases.length} phrases`);
 }
 
-export default PhraseListener;
+export default PhraseService;

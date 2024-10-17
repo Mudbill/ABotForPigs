@@ -1,4 +1,6 @@
-const EmojiChangeListener: Listener = async (client) => {
+import { Service } from "../types";
+
+const EmojiService: Service = async (client) => {
   client.on("emojiDelete", (emoji) => {
     const channel = emoji.guild.channels.cache.find((c) =>
       c.name.includes("announcements")
@@ -18,4 +20,4 @@ const EmojiChangeListener: Listener = async (client) => {
   });
 };
 
-export default EmojiChangeListener;
+export default EmojiService;

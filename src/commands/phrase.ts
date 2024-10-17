@@ -1,10 +1,9 @@
 import { Message, PermissionsBitField } from "discord.js";
-import { addPhrase, getPhrases, removePhrase } from "../database";
-import { create, all } from "mathjs";
-import { loadPhrases } from "../listeners/PhraseListener";
+import { addPhrase, getPhrases, removePhrase } from "../db/database";
+import { loadPhrases } from "../services/phrase-service";
 import { Arguments } from "yargs-parser";
-
-const math = create(all, {});
+import Mexp from "math-expression-evaluator";
+import { Command } from "../types";
 
 const PhraseCommand: Command = {
   alias: "phrase",
@@ -148,10 +147,16 @@ async function add(msg: Message, args: Arguments) {
     }
   }
 
-  let evaluatedChance = math.evaluate(`${chance}`);
-  if (typeof evaluatedChance === "number") {
-    evaluatedChance = Math.max(0, Math.min(evaluatedChance, 1));
+  let evaluatedChance: number;
+
+  if (chance.includes("%")) {
+    evaluatedChance = parseFloat(chance) / 100;
+  } else {
+    const mexp = new Mexp();
+    evaluatedChance = mexp.eval(chance);
   }
+
+  evaluatedChance = Math.max(0, Math.min(evaluatedChance, 1));
 
   const result = await addPhrase({
     chance: evaluatedChance,

@@ -1,4 +1,5 @@
 import { PermissionsBitField } from "discord.js";
+import { Command } from "../types";
 
 const AboutCommand: Command = {
   alias: "about",

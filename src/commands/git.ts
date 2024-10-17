@@ -1,5 +1,6 @@
 import { PermissionsBitField } from "discord.js";
 import git from "simple-git";
+import { Command } from "../types";
 
 const GitCommand: Command = {
   alias: "git",

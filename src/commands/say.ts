@@ -1,4 +1,5 @@
 import { Message, PermissionsBitField } from "discord.js";
+import { Command } from "../types";
 
 const SayCommand: Command = {
   alias: "say",

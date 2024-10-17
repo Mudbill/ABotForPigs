@@ -1,4 +1,5 @@
 import { ChannelType, PermissionsBitField } from "discord.js";
+import { Command } from "../types";
 
 const PinLimitCommand: Command = {
   alias: "pinlimit",

@@ -1,14 +1,14 @@
 import { Message, PermissionsBitField } from "discord.js";
 import { youtube } from "scrape-youtube";
+import { Command } from "../types";
+
+type CacheItem = {
+  timeout: NodeJS.Timeout;
+  destroy: () => void;
+};
 
 /** Cache of users currently using youtube search */
-const users: Record<
-  string,
-  {
-    timeout: NodeJS.Timeout;
-    destroy: () => void;
-  }
-> = {};
+const cache = new Map<string, CacheItem>();
 
 const YtCommand: Command = {
   alias: "yt",
@@ -96,23 +96,23 @@ const YtCommand: Command = {
     function timeIsOut() {
       msg.client.off("messageCreate", cb);
       timeout = undefined;
-      delete users[msg.author.id];
+      cache.delete(msg.author.id);
     }
 
-    if (users[msg.author.id]) {
-      users[msg.author.id].destroy();
+    if (cache.has(msg.author.id)) {
+      cache.get(msg.author.id)?.destroy();
     }
 
     msg.client.on("messageCreate", cb);
     timeout = setTimeout(timeIsOut, 15000);
 
-    users[msg.author.id] = {
+    cache.set(msg.author.id, {
       timeout,
       destroy: () => {
         timeIsOut();
         clearTimeout(timeout);
       },
-    };
+    });
   },
 };
 

@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits } from "discord.js";
-import listeners from "./listeners";
-import { logger } from "./util/log";
+import { logger } from "./utils/log";
+import { services } from "./features";
 
 const client = new Client({
   intents: [
@@ -26,11 +26,11 @@ client.on("interactionCreate", async (interaction) => {
 
 client.login(process.env.BOT_TOKEN);
 
-for (const listener of listeners) {
-  listener(client);
+for (const service of services) {
+  service(client);
 }
 
-logger.info(`Loaded ${listeners.length} listeners`);
+logger.info(`Loaded ${services.length} listeners`);
 
 process.on("unhandledRejection", (e) => {
   logger.error(e);
