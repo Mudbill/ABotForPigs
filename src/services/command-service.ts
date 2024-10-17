@@ -1,4 +1,4 @@
-import botConfig from "../config/bot.config";
+import botConfig from "../config";
 import yargsParser from "yargs-parser";
 import { logger } from "../utils/log";
 import { Service } from "../types";

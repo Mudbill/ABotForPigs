@@ -1,5 +1,5 @@
 import Datastore from "nedb-promises";
-import botConfig from "../config/bot.config";
+import botConfig from "../config";
 import { logger } from "../utils/log";
 
 export type Phrase = {
