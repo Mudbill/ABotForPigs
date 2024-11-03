@@ -152,7 +152,7 @@ async function add(msg: Message, args: Arguments) {
   });
 
   if (result._id) {
-    msg.channel.send("Added phrase. See all with `--phrase list`");
+    msg.channel.send("Added reaction. See all with `--reaction list`");
     loadReactions();
   }
 }
