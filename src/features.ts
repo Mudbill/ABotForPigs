@@ -12,6 +12,7 @@ import { Command } from "./types";
 import CommandService from "./services/command-service";
 import EmojiService from "./services/emoji-service";
 import PhraseService from "./services/phrase-service";
+import { GoodMorningService } from "./services/good-morning-service";
 
 export const commands = new Map<string, Command>([
   ["phrase", PhraseCommand],
@@ -26,4 +27,9 @@ export const commands = new Map<string, Command>([
   ["pinlimit", PinLimitCommand],
 ]);
 
-export const services = [CommandService, PhraseService, EmojiService];
+export const services = [
+  CommandService,
+  PhraseService,
+  EmojiService,
+  GoodMorningService,
+];

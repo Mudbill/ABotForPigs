@@ -33,7 +33,7 @@ for (const service of services) {
   service(client);
 }
 
-logger.info(`Loaded ${services.length} listeners`);
+logger.info(`Loaded ${services.length} services`);
 
 process.on("unhandledRejection", (e) => {
   logger.error(e);

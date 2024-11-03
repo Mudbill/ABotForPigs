@@ -1,5 +1,6 @@
 import { PermissionsBitField } from "discord.js";
 import { Command } from "../types";
+import { loadingEmoji } from "../utils/emojis";
 
 const PingCommand: Command = {
   alias: "ping",
@@ -8,7 +9,7 @@ const PingCommand: Command = {
     if (!msg.channel.isSendable()) {
       return;
     }
-    const msg2 = await msg.channel.send("🙂");
+    const msg2 = await msg.channel.send(loadingEmoji);
     const delay = msg2.createdTimestamp - msg.createdTimestamp;
 
     msg2.edit({

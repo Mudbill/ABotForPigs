@@ -47,7 +47,7 @@ export const CommandService: Service = async (client) => {
     }
   });
 
-  logger.info("CommandListener initialized");
+  logger.info("CommandService initialized");
 };
 
 export default CommandService;

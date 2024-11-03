@@ -4,6 +4,7 @@ import { loadPhrases } from "../services/phrase-service";
 import { Arguments } from "yargs-parser";
 import Mexp from "math-expression-evaluator";
 import { Command } from "../types";
+import { cmonEmoji, thatsFuckingItEmoji } from "../utils/emojis";
 
 const PhraseCommand: Command = {
   alias: "phrase",
@@ -117,7 +118,7 @@ async function add(msg: Message, args: Arguments) {
 
   if (!trigger) {
     return msg.channel.send(
-      "Missing trigger word <:thats_fucking_it:940010467571683338> set with -t or --trigger"
+      `Missing trigger word ${thatsFuckingItEmoji} set with -t or --trigger`
     );
   }
 
@@ -134,7 +135,7 @@ async function add(msg: Message, args: Arguments) {
   }
   if (!reply) {
     return msg.channel.send(
-      "What do I even say? <:cmon:820326876719218769> set a reply with -r or --reply"
+      `What do I even say? ${cmonEmoji} set a reply with -r or --reply`
     );
   }
 

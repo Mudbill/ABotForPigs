@@ -47,7 +47,7 @@ const PhraseService: Service = async (client) => {
 
   await loadPhrases();
 
-  logger.info("PhraseListener initialized");
+  logger.info("PhraseService initialized");
 };
 
 export async function loadPhrases() {
