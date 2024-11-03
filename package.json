@@ -5,8 +5,8 @@
   "author": "Mudbill",
   "license": "MIT",
   "scripts": {
-    "start": "tsx --env-file=.env ./src/main.ts",
-    "dev": "tsx watch --env-file=.env ./src/main.ts"
+    "start": "tsx ./src/main.ts",
+    "dev": "tsx watch ./src/main.ts"
   },
   "dependencies": {
     "@mudbill/duckduckgo-images-api": "^1.2.2",
