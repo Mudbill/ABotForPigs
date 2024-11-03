@@ -1,9 +1,6 @@
 import { Client, GatewayIntentBits } from "discord.js";
 import { logger } from "./utils/log";
 import { services } from "./features";
-import { config } from "dotenv";
-
-config();
 
 const client = new Client({
   intents: [

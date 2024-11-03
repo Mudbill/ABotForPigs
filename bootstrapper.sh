@@ -2,6 +2,6 @@
 
 while true
 do
-bun start
+npm run start
 sleep 3
 done
