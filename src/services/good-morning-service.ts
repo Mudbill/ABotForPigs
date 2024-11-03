@@ -1,7 +1,8 @@
+import { Message, PartialMessage } from "discord.js";
 import { Service } from "../types";
 
 export const GoodMorningService: Service = async (client) => {
-  client.on("messageCreate", async (message) => {
+  async function handler(message: Message<boolean> | PartialMessage) {
     const channel = message.guild?.channels.cache.find((c) =>
       c.name.toLowerCase().includes("good-morning")
     );
@@ -9,13 +10,17 @@ export const GoodMorningService: Service = async (client) => {
       return;
     }
 
-    const goodIndex = message.content.toLowerCase().indexOf("good");
-    const morningIndex = message.content.toLowerCase().indexOf("morning");
+    const goodIndex = message.content?.toLowerCase().indexOf("good") ?? -1;
+    const morningIndex =
+      message.content?.toLowerCase().indexOf("morning") ?? -1;
 
     if (goodIndex !== -1 && morningIndex !== -1 && goodIndex < morningIndex) {
       // yay
     } else {
       message.delete();
     }
-  });
+  }
+
+  client.on("messageCreate", handler);
+  client.on("messageUpdate", handler);
 };
