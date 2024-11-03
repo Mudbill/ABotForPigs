@@ -3,3 +3,4 @@ bin
 store.db
 .DS_Store
 .env
+dist/

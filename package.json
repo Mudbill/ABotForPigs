@@ -1,11 +1,12 @@
 {
   "name": "abotforpigs",
   "version": "2.1.0",
+  "type": "module",
   "module": "src/main.ts",
   "author": "Mudbill",
   "license": "MIT",
   "scripts": {
-    "start": "bun .",
+    "start": "tsx ./src/main",
     "dev": "bun --hot ."
   },
   "dependencies": {
@@ -13,11 +14,12 @@
     "@types/yargs-parser": "^21.0.3",
     "chalk": "^5.3.0",
     "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5",
     "math-expression-evaluator": "^2.0.5",
-    "mathjs": "^13.2.0",
     "nedb-promises": "^6.2.3",
     "scrape-youtube": "^2.4.0",
     "simple-git": "^3.27.0",
+    "tsx": "^4.19.2",
     "typescript": "^5.6.3",
     "yargs-parser": "^21.1.1"
   }
