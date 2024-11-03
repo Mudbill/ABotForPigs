@@ -22,5 +22,7 @@ export const GoodMorningService: Service = async (client) => {
   }
 
   client.on("messageCreate", handler);
-  client.on("messageUpdate", handler);
+  client.on("messageUpdate", (oldMessage, newMessage) => {
+    handler(newMessage);
+  });
 };
