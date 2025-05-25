@@ -1,7 +1,7 @@
 import { Message, PermissionsBitField } from "discord.js";
 import { youtube } from "scrape-youtube";
 import { Command } from "../types";
-import { cmonTiredEmoji, loadingEmoji } from "../utils/emojis";
+import config from "../config";
 
 type CacheItem = {
   timeout: NodeJS.Timeout;
@@ -19,7 +19,7 @@ const YtCommand: Command = {
       return;
     }
     if (!args._.length) {
-      msg.channel.send(`${cmonTiredEmoji} Missing search query`);
+      msg.channel.send(`${config.emojis.cmonTired} Missing search query`);
       return;
     }
 
@@ -29,7 +29,7 @@ const YtCommand: Command = {
       content: `>${query}`,
       embeds: [
         {
-          description: `${loadingEmoji} Connecting to Youtube...`,
+          description: `${config.emojis.loading} Connecting to Youtube...`,
         },
       ],
     });

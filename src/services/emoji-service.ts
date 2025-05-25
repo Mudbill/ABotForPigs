@@ -1,6 +1,6 @@
 import { Service } from "../types";
 
-const EmojiService: Service = async (client) => {
+export const EmojiService: Service = async (client) => {
   client.on("emojiDelete", (emoji) => {
     const channel = emoji.guild.channels.cache.find((c) =>
       c.name.includes("announcements")
@@ -19,5 +19,3 @@ const EmojiService: Service = async (client) => {
     }
   });
 };
-
-export default EmojiService;

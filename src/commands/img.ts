@@ -1,7 +1,7 @@
 import { Message, PermissionsBitField, TextChannel } from "discord.js";
 import { image_search } from "@mudbill/duckduckgo-images-api";
 import { Command } from "../types";
-import { cmonTiredEmoji, loadingEmoji } from "../utils/emojis";
+import config from "../config";
 
 /** Cache of users currently using image search */
 const users: Record<
@@ -21,7 +21,7 @@ const ImgCommand: Command = {
     }
 
     if (!args._[0]) {
-      msg.channel.send(`${cmonTiredEmoji} Missing search query`);
+      msg.channel.send(`${config.emojis.cmonTired} Missing search query`);
       return;
     }
 
@@ -31,7 +31,7 @@ const ImgCommand: Command = {
       content: `>${query}`,
       embeds: [
         {
-          description: `${loadingEmoji} Fetching results...`,
+          description: `${config.emojis.loading} Fetching results...`,
         },
       ],
     });

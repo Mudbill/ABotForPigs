@@ -4,7 +4,7 @@ import { logger } from "../utils/log";
 
 let phrases: Phrase[] = [];
 
-const PhraseService: Service = async (client) => {
+export const PhraseService: Service = async (client) => {
   client.on("messageCreate", async (msg) => {
     try {
       if (msg.author.bot) return;
@@ -54,5 +54,3 @@ export async function loadPhrases() {
   phrases = await getPhrases();
   logger.info(`Loaded ${phrases.length} phrases`);
 }
-
-export default PhraseService;

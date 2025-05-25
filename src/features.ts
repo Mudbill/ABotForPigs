@@ -9,12 +9,12 @@ import RestartCommand from "./commands/restart";
 import SayCommand from "./commands/say";
 import YtCommand from "./commands/yt";
 import { Command } from "./types";
-import CommandService from "./services/command-service";
-import EmojiService from "./services/emoji-service";
-import PhraseService from "./services/phrase-service";
+import { ReactionCommand } from "./commands/reaction";
 import { GoodMorningService } from "./services/good-morning-service";
-import ReactionService from "./services/react-service";
-import ReactionCommand from "./commands/reaction";
+import { CommandService } from "./services/command-service";
+import { PhraseService } from "./services/phrase-service";
+import { EmojiService } from "./services/emoji-service";
+import { ReactionService } from "./services/react-service";
 
 export const commands = new Map<string, Command>([
   ["phrase", PhraseCommand],

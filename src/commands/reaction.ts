@@ -3,10 +3,10 @@ import { addReaction, getReactions, removeReaction } from "../db/database";
 import { Arguments } from "yargs-parser";
 import Mexp from "math-expression-evaluator";
 import { Command } from "../types";
-import { cmonEmoji, thatsFuckingItEmoji } from "../utils/emojis";
 import { loadReactions } from "../services/react-service";
+import config from "../config";
 
-const ReactionCommand: Command = {
+export const ReactionCommand: Command = {
   alias: "reaction",
   permission: PermissionsBitField.Flags.Administrator,
   argOptions: {
@@ -104,7 +104,7 @@ async function add(msg: Message, args: Arguments) {
 
   if (!trigger) {
     return msg.channel.send(
-      `Missing trigger word ${thatsFuckingItEmoji} set with -t or --trigger`
+      `Missing trigger word ${config.emojis.thatsFuckingIt} set with -t or --trigger`
     );
   }
 
@@ -121,7 +121,7 @@ async function add(msg: Message, args: Arguments) {
   }
   if (!emoji) {
     return msg.channel.send(
-      `What do I even react with? ${cmonEmoji} set a reaction with -e or --emoji`
+      `What do I even react with? ${config.emojis.cmon} set a reaction with -e or --emoji`
     );
   }
 
@@ -129,7 +129,7 @@ async function add(msg: Message, args: Arguments) {
     await msg.react(emoji);
   } catch (error) {
     return msg.channel.send(
-      `Bro, I'm not even in that server, give me something I can actually access ${cmonEmoji}`
+      `Bro, I'm not even in that server, give me something I can actually access ${config.emojis.cmon}`
     );
   }
 
@@ -156,5 +156,3 @@ async function add(msg: Message, args: Arguments) {
     loadReactions();
   }
 }
-
-export default ReactionCommand;

@@ -4,7 +4,7 @@ import { logger } from "../utils/log";
 
 let reactions: Reaction[] = [];
 
-const ReactionService: Service = async (client) => {
+export const ReactionService: Service = async (client) => {
   client.on("messageCreate", async (msg) => {
     try {
       if (msg.author.bot) return;
@@ -42,5 +42,3 @@ export async function loadReactions() {
   reactions = await getReactions();
   logger.info(`Loaded ${reactions.length} reactions`);
 }
-
-export default ReactionService;

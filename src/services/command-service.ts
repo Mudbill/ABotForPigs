@@ -49,5 +49,3 @@ export const CommandService: Service = async (client) => {
 
   logger.info("CommandService initialized");
 };
-
-export default CommandService;

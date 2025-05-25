@@ -6,9 +6,11 @@
   "license": "MIT",
   "scripts": {
     "start": "tsx ./src/main.ts",
-    "dev": "tsx watch ./src/main.ts"
+    "dev": "tsx watch ./src/main.ts",
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
+    "@google/genai": "^1.0.1",
     "@mudbill/duckduckgo-images-api": "^1.2.2",
     "@types/yargs-parser": "^21.0.3",
     "chalk": "^5.4.1",
