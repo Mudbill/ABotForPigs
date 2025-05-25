@@ -15,6 +15,7 @@ import { CommandService } from "./services/command-service";
 import { PhraseService } from "./services/phrase-service";
 import { EmojiService } from "./services/emoji-service";
 import { ReactionService } from "./services/react-service";
+import { GeminiService } from "./services/gemini-service";
 
 export const commands = new Map<string, Command>([
   ["phrase", PhraseCommand],
@@ -36,4 +37,5 @@ export const services = [
   EmojiService,
   GoodMorningService,
   ReactionService,
+  GeminiService,
 ];
