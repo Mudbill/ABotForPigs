@@ -1,7 +1,7 @@
 import { Message, PermissionsBitField, TextChannel } from "discord.js";
-import { image_search } from "@mudbill/duckduckgo-images-api";
 import { Command } from "../types";
 import config from "../config";
+import { imageSearch } from "@mudbill/duckduckgo-images-api";
 
 /** Cache of users currently using image search */
 const users: Record<
@@ -27,37 +27,26 @@ const ImgCommand: Command = {
 
     const query = args._.join(" ");
 
-    const reply = await msg.channel.send({
-      content: `>${query}`,
-      embeds: [
-        {
-          description: `${config.emojis.loading} Fetching results...`,
-        },
-      ],
-    });
+    await msg.channel.sendTyping();
 
-    const params = {
+    const isNsfw = msg.channel instanceof TextChannel && msg.channel.nsfw;
+
+    const result = await imageSearch({
       query,
-      moderate: true,
       iterations: 1,
       retries: 1,
-    };
+      safe: !isNsfw,
+    });
 
-    if (msg.channel instanceof TextChannel) {
-      if (msg.channel.nsfw) params.moderate = false;
-    }
-
-    const result = await image_search(params);
     if (!result.length) {
-      reply.edit({
+      msg.channel.send({
         content: "No results, try searching something less retarded next time",
-        embeds: [],
       });
       return;
     }
 
-    reply.edit({
-      content: result[0].image,
+    const reply = await msg.channel.send({
+      content: result[0].thumbnail,
       embeds: [],
     });
 
