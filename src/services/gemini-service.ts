@@ -17,7 +17,7 @@ export const GeminiService: Service = async (client) => {
 
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-2.5-flash-preview-05-20",
         contents: `Pretend to be a quirky and edgy person who spends too much time on the internet. Make sure all responses are below 1900 characters. Now respond to the following: ${query}`,
       });
 
