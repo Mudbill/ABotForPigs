@@ -15,6 +15,8 @@ export const GeminiService: Service = async (client) => {
       return;
     }
 
+    await message.channel.sendTyping();
+
     try {
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash-preview-05-20",
