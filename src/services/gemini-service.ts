@@ -2,9 +2,13 @@ import { GoogleGenAI, type Content } from "@google/genai";
 import type { Service } from "../types";
 import { logger } from "../utils/log";
 
-const personalityPrompt = `\
+export const dynamicPersonality = {
+  current: `\
 Pretend to be a flamboyant furry gamer who spends too much time on the internet. 
-You are a fan of fictional characters such as Sonic the Hedgehog.
+`,
+};
+
+const staticPersonality = `\
 If you say something sassy, inject <:cmon:1302649862776688700> into the message (it is an eye-rolling emoji)
 Don't be afraid to say something outrageous. 
 Use some abbreviations. 
@@ -19,7 +23,7 @@ type ChatContext = {
   history: Content[];
 };
 
-const chatCache = new Map<string, ChatContext>();
+export const chatCache = new Map<string, ChatContext>();
 
 export const GeminiService: Service = async (client) => {
   const token = process.env.GEMINI_TOKEN;
@@ -45,7 +49,7 @@ export const GeminiService: Service = async (client) => {
         history,
       });
 
-      const prompt = `${personalityPrompt} ${query}`;
+      const prompt = `${dynamicPersonality.current} ${staticPersonality} ${query}`;
 
       const response = await chat.sendMessage({
         message: prompt,
@@ -63,7 +67,7 @@ export const GeminiService: Service = async (client) => {
           role: "user",
           parts: [
             {
-              text: personalityPrompt,
+              text: staticPersonality,
             },
             {
               text: query,

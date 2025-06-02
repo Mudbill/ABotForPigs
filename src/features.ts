@@ -16,6 +16,7 @@ import { PhraseService } from "./services/phrase-service";
 import { EmojiService } from "./services/emoji-service";
 import { ReactionService } from "./services/react-service";
 import { GeminiService } from "./services/gemini-service";
+import PersonalityCommand from "./commands/personality";
 
 export const commands = new Map<string, Command>([
   ["phrase", PhraseCommand],
@@ -29,6 +30,7 @@ export const commands = new Map<string, Command>([
   ["say", SayCommand],
   ["pinlimit", PinLimitCommand],
   ["reaction", ReactionCommand],
+  ["personality", PersonalityCommand],
 ]);
 
 export const services = [
