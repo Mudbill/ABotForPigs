@@ -16,14 +16,6 @@ client.on("ready", () => {
   logger.info(`Logged in as ${client.user?.tag}`);
 });
 
-client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-
-  if (interaction.commandName == "ping") {
-    await interaction.reply("Pong!");
-  }
-});
-
 client.login(process.env.BOT_TOKEN);
 
 for (const service of services) {

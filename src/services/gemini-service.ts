@@ -1,6 +1,23 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, type Content } from "@google/genai";
 import type { Service } from "../types";
 import { logger } from "../utils/log";
+
+const personalityPrompt = `\
+Pretend to be an edgy doomer person who spends too much time on the internet. 
+Don't be afraid to say something outrageous. 
+Use some abbreviations. 
+Use swear words occasionally. 
+Prefer shorter responses up to 300 characters, unless asked to elaborate. 
+Make sure all responses are below 1900 characters.
+Now respond to the following:
+`;
+
+type ChatContext = {
+  lastUpdated: number;
+  history: Content[];
+};
+
+const chatCache = new Map<string, ChatContext>();
 
 export const GeminiService: Service = async (client) => {
   const token = process.env.GEMINI_TOKEN;
@@ -9,34 +26,124 @@ export const GeminiService: Service = async (client) => {
   }
   const ai = new GoogleGenAI({ apiKey: token });
 
-  client.on("messageCreate", async (message) => {
-    const [, query] = message.content.split(`<@${client.user?.id}> `);
+  client.on("messageCreate", async (msg) => {
+    const [, query] = msg.content.split(`<@${client.user?.id}> `);
     if (!query) {
       return;
     }
 
-    await message.channel.sendTyping();
+    const userId = msg.author.id;
+    let history = chatCache.get(userId)?.history ?? [];
+
+    await msg.channel.sendTyping();
 
     try {
-      const response = await ai.models.generateContent({
+      const chat = ai.chats.create({
         model: "gemini-2.5-flash-preview-05-20",
-        contents: `Pretend to be a quirky and edgy person who spends too much time on the internet. Make sure all responses are below 1900 characters. Now respond to the following: ${query}`,
+        history,
       });
 
-      const text = response.candidates
-        ?.find(() => true)
-        ?.content?.parts?.find(() => true)?.text;
+      const prompt = `${personalityPrompt} ${query}`;
 
-      if (text) {
-        message.reply({ content: text });
-      } else {
+      const response = await chat.sendMessage({
+        message: prompt,
+      });
+
+      const text = response.text;
+
+      if (!text) {
         throw new Error("Failed to get response");
       }
+
+      // If history is empty, first register the personality, otherwise just continue the conversation
+      if (history.length === 0) {
+        history.push({
+          role: "user",
+          parts: [
+            {
+              text: personalityPrompt,
+            },
+            {
+              text: query,
+            },
+          ],
+        });
+      } else {
+        history.push({
+          role: "user",
+          parts: [
+            {
+              text: query,
+            },
+          ],
+        });
+      }
+
+      // Then register the AI response
+      history.push({
+        role: "model",
+        parts: [
+          {
+            text,
+          },
+        ],
+      });
+
+      // Store the cache for later
+      chatCache.set(userId, { history, lastUpdated: Date.now() });
+
+      const messages: string[] = [];
+
+      // If response message is too long for Discord messages, split them up into chunks
+      if (text.length >= 2000) {
+        const parts = text.split(". ");
+        let messageBuilder = "";
+        for (const part of parts) {
+          const combinedLength = messageBuilder.length + part.length;
+          if (combinedLength < 2000) {
+            messageBuilder += part + ". ";
+          } else {
+            messages.push(messageBuilder);
+            messageBuilder = "";
+          }
+        }
+      } else {
+        messages.push(text);
+      }
+
+      // Send all message chunks, first one being a pinged reply
+      let hasReplied = false;
+      for (const message of messages) {
+        if (!hasReplied) {
+          await msg.reply(message);
+          hasReplied = true;
+        } else {
+          await msg.channel.sendTyping();
+          await sleep(2000);
+          await msg.channel.send(message);
+        }
+      }
     } catch (e) {
-      message.reply("Uh... sorry I had a brainfart");
+      msg.reply("Uh... sorry I had a brainfart");
       console.error(e);
     }
   });
 
+  // Register a routine cleanup of the cache if it has been more than 5 minutes since last message
+  setInterval(() => {
+    const now = Date.now();
+    for (const [userId, context] of chatCache) {
+      const msAgo = now - context.lastUpdated;
+      if (msAgo > 1000 * 60 * 5) {
+        console.log("Deleting chat history for user", userId);
+        chatCache.delete(userId);
+      }
+    }
+  }, 1000 * 60);
+
   logger.info("GeminiService initialized");
 };
+
+async function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
