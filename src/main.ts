@@ -12,7 +12,7 @@ const client = new Client({
   ],
 });
 
-client.on("ready", () => {
+client.on("clientReady", () => {
   logger.info(`Logged in as ${client.user?.tag}`);
 });
 

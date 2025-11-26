@@ -11,7 +11,7 @@ Pretend to be a flamboyant furry gamer who spends too much time on the internet.
 const staticPersonality = `\
 If you say something sassy, inject <:cmon:1302649862776688700> into the message (it is an eye-rolling emoji)
 Don't be afraid to say something outrageous. 
-Use some abbreviations. 
+Use some abbreviations but in lowercase. 
 Use swear words occasionally. 
 Prefer shorter responses up to 300 characters, unless asked to elaborate. 
 Make sure all responses are below 1900 characters.
@@ -25,6 +25,10 @@ type ChatContext = {
 
 export const chatCache = new Map<string, ChatContext>();
 
+const chatHistory: { messages: string[] } = {
+  messages: [],
+};
+
 export const GeminiService: Service = async (client) => {
   const token = process.env.GEMINI_TOKEN;
   if (!token) {
@@ -33,6 +37,17 @@ export const GeminiService: Service = async (client) => {
   const ai = new GoogleGenAI({ apiKey: token });
 
   client.on("messageCreate", async (msg) => {
+    if (msg.author.bot) return;
+
+    // Trim down chat cache so that it only keeps the last 20 messages
+    if (chatHistory.messages.length >= 20) {
+      chatHistory.messages = chatHistory.messages.slice(-19);
+    }
+
+    // Add the current message to the cache
+    chatHistory.messages.push(msg.content);
+
+    // If bot is not tagged, don't do anything more
     const [, query] = msg.content.split(`<@${client.user?.id}> `);
     if (!query) {
       return;
@@ -45,7 +60,7 @@ export const GeminiService: Service = async (client) => {
 
     try {
       const chat = ai.chats.create({
-        model: "gemini-2.5-flash-preview-05-20",
+        model: "gemini-2.5-flash",
         history,
       });
 
