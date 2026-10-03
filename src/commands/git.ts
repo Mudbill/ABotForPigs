@@ -1,5 +1,5 @@
 import { PermissionsBitField } from "discord.js";
-import git from "simple-git";
+import { simpleGit } from "simple-git";
 import { Command } from "../types";
 
 const GitCommand: Command = {
@@ -7,7 +7,7 @@ const GitCommand: Command = {
   permission: PermissionsBitField.Flags.Administrator,
   exec: async (msg, args) => {
     if (args._[0] === "pull") {
-      let result = await git(__dirname).raw(["pull", "--stat", "origin", "master"]);
+      let result = await simpleGit(__dirname).raw(["pull", "--stat", "origin", "master"]);
       let output = result.slice(0, 500);
       if (msg.channel.isSendable())
         msg.channel.send({
