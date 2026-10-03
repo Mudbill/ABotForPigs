@@ -4,9 +4,8 @@ import { Command } from "../types";
 const HelpCommand: Command = {
   alias: "help",
   permission: PermissionsBitField.Flags.SendMessages,
-  exec: async (msg, args) => {
-    msg.channel.isSendable() &&
-      msg.channel.send(`i was too lazy to write a help page lol`);
+  exec: async (msg, _args) => {
+    if (msg.channel.isSendable()) msg.channel.send(`i was too lazy to write a help page lol`);
   },
 };
 

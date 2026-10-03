@@ -73,11 +73,7 @@ const ImgCommand: Command = {
           content: result[index].image,
         });
       }
-      if (
-        ["p", "prev", "previous", "b", "back"].includes(
-          msg2.content.toLowerCase()
-        )
-      ) {
+      if (["p", "prev", "previous", "b", "back"].includes(msg2.content.toLowerCase())) {
         if (timeout) timeout.refresh();
 
         await msg2.delete();

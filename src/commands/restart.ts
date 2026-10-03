@@ -4,7 +4,7 @@ import { Command } from "../types";
 const RestartCommand: Command = {
   alias: "restart",
   permission: PermissionsBitField.Flags.Administrator,
-  exec: async (msg, args) => {
+  exec: async (msg, _args) => {
     if (!msg.channel.isSendable()) {
       return;
     }

@@ -18,13 +18,13 @@ const logger = {
 
 const channel = {
   info: (message: Message, text: any) => {
-    message.channel.isSendable() && message.channel.send(text);
+    if (message.channel.isSendable()) message.channel.send(text);
   },
-  warn: (message: Message, text: any, exception: Error) => {
-    message.channel.isSendable() && message.channel.send(text);
+  warn: (message: Message, text: any, _exception: Error) => {
+    if (message.channel.isSendable()) message.channel.send(text);
   },
-  error: (message: Message, text: any, exception: Error) => {
-    message.channel.isSendable() && message.channel.send(text);
+  error: (message: Message, text: any, _exception: Error) => {
+    if (message.channel.isSendable()) message.channel.send(text);
   },
 };
 

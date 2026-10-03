@@ -30,7 +30,7 @@ const PhraseCommand: Command = {
       return msg.channel.send(
         'to add: `$phrase add --trigger Sabatu --chance 1/1000 --reply "I am bitch :)"`\n' +
           "to list: `$phrase list`\n" +
-          "to remove, first list then copy ID and `$phrase remove <id>`"
+          "to remove, first list then copy ID and `$phrase remove <id>`",
       );
     }
 
@@ -118,24 +118,22 @@ async function add(msg: Message, args: Arguments) {
 
   if (!trigger) {
     return msg.channel.send(
-      `Missing trigger word ${config.emojis.thatsFuckingIt} set with -t or --trigger`
+      `Missing trigger word ${config.emojis.thatsFuckingIt} set with -t or --trigger`,
     );
   }
 
   try {
-    const regex = new RegExp(trigger);
-  } catch (e) {
+    new RegExp(trigger);
+  } catch {
     return msg.channel.send("That regex will fuck me up bro");
   }
 
   if (!chance) {
-    return msg.channel.send(
-      "No chance means never dumbass, set with -c or --chance"
-    );
+    return msg.channel.send("No chance means never dumbass, set with -c or --chance");
   }
   if (!reply) {
     return msg.channel.send(
-      `What do I even say? ${config.emojis.cmon} set a reply with -r or --reply`
+      `What do I even say? ${config.emojis.cmon} set a reply with -r or --reply`,
     );
   }
 

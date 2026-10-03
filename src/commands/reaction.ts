@@ -28,7 +28,7 @@ export const ReactionCommand: Command = {
       return msg.channel.send(
         'to add: `$reaction add --trigger Sabatu --chance 1/1000 --emoji "🙂"`\n' +
           "to list: `$reaction list`\n" +
-          "to remove, first list then copy ID and `$reaction remove <id>`"
+          "to remove, first list then copy ID and `$reaction remove <id>`",
       );
     }
 
@@ -69,9 +69,7 @@ async function list(msg: Message) {
   if (!msg.channel.isSendable()) {
     return;
   }
-  const result = (await getReactions()).filter(
-    (p) => p.serverId === msg.guildId
-  );
+  const result = (await getReactions()).filter((p) => p.serverId === msg.guildId);
   if (!result.length) {
     msg.channel.send("_No reactions added_");
     return;
@@ -104,32 +102,30 @@ async function add(msg: Message, args: Arguments) {
 
   if (!trigger) {
     return msg.channel.send(
-      `Missing trigger word ${config.emojis.thatsFuckingIt} set with -t or --trigger`
+      `Missing trigger word ${config.emojis.thatsFuckingIt} set with -t or --trigger`,
     );
   }
 
   try {
-    const regex = new RegExp(trigger);
-  } catch (e) {
+    new RegExp(trigger);
+  } catch {
     return msg.channel.send("That regex will fuck me up bro");
   }
 
   if (!chance) {
-    return msg.channel.send(
-      "No chance means never dumbass, set with -c or --chance"
-    );
+    return msg.channel.send("No chance means never dumbass, set with -c or --chance");
   }
   if (!emoji) {
     return msg.channel.send(
-      `What do I even react with? ${config.emojis.cmon} set a reaction with -e or --emoji`
+      `What do I even react with? ${config.emojis.cmon} set a reaction with -e or --emoji`,
     );
   }
 
   try {
     await msg.react(emoji);
-  } catch (error) {
+  } catch {
     return msg.channel.send(
-      `Bro, I'm not even in that server, give me something I can actually access ${config.emojis.cmon}`
+      `Bro, I'm not even in that server, give me something I can actually access ${config.emojis.cmon}`,
     );
   }
 

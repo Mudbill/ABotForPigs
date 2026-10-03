@@ -27,9 +27,7 @@ export const ReactionService: Service = async (client) => {
       }
     } catch (error) {
       logger.error("Command failed", error);
-      msg.channel.send(
-        "Internal error occurred, can someone fucking fix this shit??"
-      );
+      msg.channel.send("Internal error occurred, can someone fucking fix this shit??");
     }
   });
 

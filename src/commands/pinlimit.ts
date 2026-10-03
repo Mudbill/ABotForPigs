@@ -4,7 +4,7 @@ import { Command } from "../types";
 const PinLimitCommand: Command = {
   alias: "pinlimit",
   permission: PermissionsBitField.Flags.SendMessages,
-  exec: async (msg, args) => {
+  exec: async (msg, _args) => {
     if (!msg.channel.isSendable()) {
       return;
     }
@@ -14,7 +14,7 @@ const PinLimitCommand: Command = {
 
     if (pins.size !== 50) {
       msg.channel.send(
-        "Wait, this channel ain't full of pins yet, how about you stop wasting everyone's time and resources huh"
+        "Wait, this channel ain't full of pins yet, how about you stop wasting everyone's time and resources huh",
       );
       return;
     }
@@ -37,12 +37,12 @@ const PinLimitCommand: Command = {
     msg.channel.send(`Ok, new channel is over here: <#${cloned.id}>`);
 
     const category = msg.guild?.channels.cache.find((c) =>
-      c.name.toLowerCase().includes("archive")
+      c.name.toLowerCase().includes("archive"),
     );
 
     if (category?.type !== ChannelType.GuildCategory) {
       msg.channel.send(
-        "HOL UP, HALP, I DUN UNDASTAN, I CANT FIND THE ARCHIVE, HALP (move the channel manually pls)"
+        "HOL UP, HALP, I DUN UNDASTAN, I CANT FIND THE ARCHIVE, HALP (move the channel manually pls)",
       );
       return;
     }

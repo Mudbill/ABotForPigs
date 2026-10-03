@@ -5,7 +5,7 @@ import config from "../config";
 const PingCommand: Command = {
   alias: "ping",
   permission: PermissionsBitField.Flags.SendMessages,
-  exec: async (msg, args) => {
+  exec: async (msg, _args) => {
     if (!msg.channel.isSendable()) {
       return;
     }

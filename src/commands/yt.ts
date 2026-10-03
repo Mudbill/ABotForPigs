@@ -71,11 +71,7 @@ const YtCommand: Command = {
           content: videos[index].link,
         });
       }
-      if (
-        ["p", "prev", "previous", "b", "back"].includes(
-          msg2.content.toLowerCase()
-        )
-      ) {
+      if (["p", "prev", "previous", "b", "back"].includes(msg2.content.toLowerCase())) {
         if (timeout) timeout.refresh();
 
         await msg2.delete();

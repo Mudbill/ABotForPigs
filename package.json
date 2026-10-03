@@ -1,13 +1,13 @@
 {
   "name": "abotforpigs",
   "version": "3.1.1",
-  "module": "src/main.ts",
-  "author": "Mudbill",
   "license": "MIT",
+  "author": "Mudbill",
+  "module": "src/main.ts",
   "scripts": {
     "start": "bun ./src/main.ts",
     "dev": "bun --hot ./src/main.ts",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit && oxlint ."
   },
   "dependencies": {
     "@google/genai": "^1.30.0",
@@ -21,7 +21,9 @@
     "yargs-parser": "^21.1.1"
   },
   "devDependencies": {
-    "@types/yargs-parser": "^21.0.3"
+    "@types/yargs-parser": "^21.0.3",
+    "oxfmt": "^0.71.0",
+    "oxlint": "^1.86.0"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"

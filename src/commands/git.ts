@@ -7,14 +7,9 @@ const GitCommand: Command = {
   permission: PermissionsBitField.Flags.Administrator,
   exec: async (msg, args) => {
     if (args._[0] === "pull") {
-      let result = await git(__dirname).raw([
-        "pull",
-        "--stat",
-        "origin",
-        "master",
-      ]);
+      let result = await git(__dirname).raw(["pull", "--stat", "origin", "master"]);
       let output = result.slice(0, 500);
-      msg.channel.isSendable() &&
+      if (msg.channel.isSendable())
         msg.channel.send({
           embeds: [
             {
@@ -22,10 +17,7 @@ const GitCommand: Command = {
               description: "```" + output + "```",
               timestamp: new Date().toISOString(),
               author: {
-                name:
-                  msg.member?.nickname ||
-                  msg.member?.user.username ||
-                  msg.author.username,
+                name: msg.member?.nickname || msg.member?.user.username || msg.author.username,
                 icon_url: msg.member?.user.avatarURL() || undefined,
               },
             },

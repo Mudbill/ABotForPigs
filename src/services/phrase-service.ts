@@ -19,10 +19,7 @@ export const PhraseService: Service = async (client) => {
         }
 
         if (phrase.channels?.length) {
-          if (
-            phrase.channels.includes(`<#${msg.channelId}>`) ===
-            Boolean(phrase.blacklist)
-          )
+          if (phrase.channels.includes(`<#${msg.channelId}>`) === Boolean(phrase.blacklist))
             continue;
         }
 
@@ -39,9 +36,7 @@ export const PhraseService: Service = async (client) => {
       }
     } catch (error) {
       logger.error("Command failed", error);
-      msg.channel.send(
-        "Internal error occurred, can someone fucking fix this shit??"
-      );
+      msg.channel.send("Internal error occurred, can someone fucking fix this shit??");
     }
   });
 
